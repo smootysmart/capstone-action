@@ -1,34 +1,24 @@
-name: Deploy Vue.js App
+name: Continuous Delivery - Nginx Pull & Deploy
 
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   deploy:
-    name: Deploy to self-hosted server
-    runs-on: self-hosted   # 🔥 Your server runner
+    name: Deploy Nginx Container
+    runs-on: self-hosted   # 👈 Runs on your VM runner
     steps:
-      # 1️⃣ Checkout code
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
-      # 2️⃣ Set up Docker (in case your runner needs it)
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v3
-
-      # 3️⃣ Build Docker image
-      - name: Build Docker image
+      - name: Pull latest Nginx image
         run: |
-          docker build -t my-vue-app:latest ./github-action-tetst
+          echo "Pulling latest Nginx image..."
+          docker pull nginx:latest
 
-      # 4️⃣ (Optional) Use Docker Compose for multi-container apps
-      - name: Deploy with Docker Compose
+      - name: Deploy Nginx with Docker Compose
         run: |
-          docker compose down
-          docker compose up -d --build
-
-      # 5️⃣ (Optional) Clean up old images
-      - name: Cleanup old images
-        run: |
-          docker image prune -f
+          echo "Deploying Nginx..."
+          docker compose -f docker-compose.yml up -d

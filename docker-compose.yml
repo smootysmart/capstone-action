@@ -1,8 +1,14 @@
-version: '3'
+version: "3.8"
+
 services:
-  web:
-    image: my-vue-app:latest
-    build: .
-    container_name: vue_app
+  nginx:
+    image: nginx:latest
+    container_name: my-nginx
+    restart: always
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      # Mount your Nginx config or HTML files if needed
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx/html:/usr/share/nginx/html
