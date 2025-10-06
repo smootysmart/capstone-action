@@ -13,10 +13,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: list folder in linux
+      - name: list docker running containers
         run: |
-          echo "Listing files in the current directory..."
-          ls -la
+          echo "Listing docker"
+          docker ps -a
 
       - name: Pull latest Nginx image
         run: |
